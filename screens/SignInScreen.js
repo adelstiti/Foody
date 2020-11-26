@@ -182,7 +182,7 @@ const SignInScreen = ({ navigation }) => {
             ]}
             onPress={() => navigation.navigate("SignUpScreen")}
           >
-            <Text style={[styles.textSign, { color: "#009387" }]}>Sign Up</Text>
+            <Text style={[styles.textSign, { color: "#FF6347" }]}>Sign Up</Text>
           </TouchableOpacity>
         </View>
       </Animatable.View>

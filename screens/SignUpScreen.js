@@ -51,7 +51,7 @@ const SignUpScreen = ({ navigation }) => {
         animation="fadeInUpBig"
         style={[styles.footer, { backgroundColor: colors.background }]}
       >
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={[styles.text_footer, { color: colors.text }]}>
             Email
           </Text>

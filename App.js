@@ -95,13 +95,13 @@ const App = () => {
         } catch (error) {
           console.log(error);
         }
-        console.log(initialLoginState, user);
 
         dispatch({
           type: "LOGIN",
           userName: user.email,
           token: user.usertoken,
         });
+        console.log(initialLoginState, user);
       },
       signUp: () => {},
       signOut: async () => {
