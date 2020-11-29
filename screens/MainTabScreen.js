@@ -1,9 +1,8 @@
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import ProfileScreen from "./ProfileScreen";
 import ExploreScreen from "./ExploreScreen";
-
+import ProfileStackScreen from "./ProfileStackScreen";
 const Tab = createMaterialBottomTabNavigator();
 
 function MainTabScreen() {
@@ -21,7 +20,7 @@ function MainTabScreen() {
       />
       <Tab.Screen
         name="Messages"
-        component={ExploreScreen}
+        component={ProfileStackScreen}
         options={{
           tabBarColor: "#694fad",
           tabBarIcon: ({ color }) => (
@@ -35,9 +34,9 @@ function MainTabScreen() {
       />
       <Tab.Screen
         name="Notifications"
-        component={ExploreScreen}
+        component={ProfileStackScreen}
         options={{
-          tabBarColor: "#d02860",
+          tabBarColor: "orange",
 
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="bell" color={color} size={26} />
@@ -46,9 +45,11 @@ function MainTabScreen() {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStackScreen}
         options={{
-          tabBarColor: "orange",
+          tabBarLabel: "Profile",
+
+          tabBarColor: "#d02860",
 
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account" color={color} size={26} />
