@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Button, StyleSheet, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { View, Button, StyleSheet, Share, ScrollView } from "react-native";
 import {
   Avatar,
   Title,
@@ -8,7 +8,32 @@ import {
   TouchableRipple,
 } from "react-native-paper";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import * as Sharing from "expo-sharing";
+import * as FileSystem from "expo-file-system";
+
 const ProfileScreen = () => {
+  const fileUri = FileSystem.cacheDirectory + "tmp.jpg";
+  const imageURL = "https://pbs.twimg.com/media/EoEqlKwXUAACjbi?format=jpg";
+
+  const myCustomShare = async () => {
+    const options = {
+      mineType: "image/jpeg",
+      dialogTitle: "Hello World my first app",
+      UII: "image/jpeg",
+    };
+    FileSystem.downloadAsync(imageURL, fileUri)
+      .then(({ uri }) => {
+        try {
+          Sharing.shareAsync(uri, options);
+        } catch (error) {
+          console.log(("Error:", error));
+        }
+      })
+      .catch((err) => {
+        console.log(JSON.stringify(err));
+      });
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.userInfoSection}>
@@ -72,7 +97,7 @@ const ProfileScreen = () => {
             <Text style={styles.menuItemText}>Payment</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple onPress={myCustomShare}>
           <View style={styles.menuItem}>
             <Icon name="share-outline" color="#ff6347" size={25} />
             <Text style={styles.menuItemText}>Tell Your Friends</Text>

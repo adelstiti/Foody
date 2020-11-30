@@ -12,7 +12,7 @@ function MainTabScreen() {
     <Tab.Navigator activeColor="white" inactiveColor="rgba(255,255,255,0.5)">
       <Tab.Screen
         name="Explore"
-        component={ProfileStackScreen}
+        component={ExploreScreen}
         options={{
           tabBarColor: "#FF6347",
           tabBarIcon: ({ color }) => (

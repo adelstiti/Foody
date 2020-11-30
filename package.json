@@ -32,7 +32,8 @@
     "react-native-screens": "~2.10.1",
     "react-native-swipe-list-view": "^3.2.5",
     "react-native-web": "~0.13.12",
-    "reanimated-bottom-sheet": "^1.0.0-alpha.22"
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22",
+    "expo-sharing": "~8.4.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
