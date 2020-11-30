@@ -129,7 +129,8 @@ const App = () => {
       }
       dispatch({ type: "REGISTER", token: usertoken });
     }, 1000);
-  }, []);
+    console.log("ok")
+  }, [loginState.userToken]);
 
   if (loginState.isLoading) {
     return (

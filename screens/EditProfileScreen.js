@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   ImageBackground,
   ScrollView,
@@ -16,38 +16,39 @@ import { useTheme } from "react-native-paper";
 
 import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
-import ImagePicker from "expo-image-picker";
-
+import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const EditProfileScreen = () => {
   const { colors } = useTheme();
-
-  const takePhotoFromCamera = () => {
-    ImagePicker.openCamera({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then((image) => {
-      console.log(image);
-    });
-  };
-
-  const choosePhotoFromLibrary = () => {
-    let result = ImagePicker.launchImageLibraryAsync({
+const [image, setImage] = useState(require("../assets/profile.jpg"))
+  const takePhotoFromCamera = async () => {
+    await Permissions.askAsync(Permissions.CAMERA_ROLL)
+    ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [4, 4],
       quality: 1,
-    });
+    }).then((result) => {
+      if (!result.cancelled) {
+        setImage({uri : result.uri});
+      }
+    })
+  };
 
-    // width: 300,
-    // height: 400,
-    // cropping: true,
-    console.log(result);
-
-    if (!result.cancelled) {
-    }
+  const choosePhotoFromLibrary = async () => {
+    await Permissions.askAsync(Permissions.CAMERA)
+    ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1,
+      }).then((result) => {
+        if (!result.cancelled) {
+          setImage({uri : result.uri});
+        }
+      })
+ 
   };
   const sheetRef = useRef(null);
   const fail = new Animated.Value(1);
@@ -113,7 +114,7 @@ const EditProfileScreen = () => {
           <TouchableOpacity onPress={() => sheetRef.current.snapTo(0)}>
             <View style={styles.imageWrapper}>
               <ImageBackground
-                source={require("../assets/profile.jpg")}
+                source={image}
                 style={{ height: 100, width: 100 }}
                 imageStyle={{ borderRadius: 15 }}
               >
