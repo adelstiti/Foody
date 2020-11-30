@@ -3,6 +3,8 @@ import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ExploreScreen from "./ExploreScreen";
 import ProfileStackScreen from "./ProfileStackScreen";
+import NotificationsScreen from "./NotificationsScreen";
+
 const Tab = createMaterialBottomTabNavigator();
 
 function MainTabScreen() {
@@ -10,7 +12,7 @@ function MainTabScreen() {
     <Tab.Navigator activeColor="white" inactiveColor="rgba(255,255,255,0.5)">
       <Tab.Screen
         name="Explore"
-        component={ExploreScreen}
+        component={ProfileStackScreen}
         options={{
           tabBarColor: "#FF6347",
           tabBarIcon: ({ color }) => (
@@ -34,7 +36,7 @@ function MainTabScreen() {
       />
       <Tab.Screen
         name="Notifications"
-        component={ProfileStackScreen}
+        component={NotificationsScreen}
         options={{
           tabBarColor: "orange",
 
