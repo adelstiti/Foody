@@ -3,13 +3,24 @@ import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ExploreScreen from "./ExploreScreen";
 import ProfileStackScreen from "./ProfileStackScreen";
-import NotificationsScreen from "./NotificationsScreen";
+import HomeScreen from "./HomeScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
 function MainTabScreen() {
   return (
     <Tab.Navigator activeColor="white" inactiveColor="rgba(255,255,255,0.5)">
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarColor: "orange",
+
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Explore"
         component={ExploreScreen}
@@ -31,17 +42,6 @@ function MainTabScreen() {
               color={color}
               size={26}
             />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Notifications"
-        component={NotificationsScreen}
-        options={{
-          tabBarColor: "orange",
-
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={26} />
           ),
         }}
       />
