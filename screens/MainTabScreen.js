@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ExploreScreen from "./ExploreScreen";
 import ProfileStackScreen from "./ProfileStackScreen";
 import HomeScreen from "./HomeScreen";
+import HomeStackScreen from "./HomeStackScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -12,9 +13,9 @@ function MainTabScreen() {
     <Tab.Navigator activeColor="white" inactiveColor="rgba(255,255,255,0.5)">
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStackScreen}
         options={{
-          tabBarColor: "orange",
+          tabBarColor: "#FF6347",
 
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
@@ -25,7 +26,7 @@ function MainTabScreen() {
         name="Explore"
         component={ExploreScreen}
         options={{
-          tabBarColor: "#FF6347",
+          tabBarColor: "orange",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="compass" color={color} size={26} />
           ),

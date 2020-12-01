@@ -1,14 +1,26 @@
 import { useTheme } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Image, Text, View, StatusBar } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  View,
+  Text,
+} from "react-native";
 import Swiper from "react-native-swiper";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Fontisto from "@expo/vector-icons/Fontisto";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import StarRating from "../components/StarRating";
 
 const HomeScreen = () => {
   const { colors } = useTheme();
 
   const theme = useTheme();
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.sliderContainer}>
         <Swiper
           horizontal={false}
@@ -16,32 +28,135 @@ const HomeScreen = () => {
           autoplay
           activeDotColor="#FF6347"
         >
-          <View>
-            <View style={styles.slide}>
-              <Image
-                source={require("../assets/icon.png")}
-                resizeMode="cover"
-                style={styles.sliderImage}
-              />
-            </View>
-            <View style={styles.slide}>
-              <Image
-                source={require("../assets/banners/food-banner2.jpg")}
-                resizeMode="cover"
-                style={styles.sliderImage}
-              />
-            </View>
-            <View style={styles.slide}>
-              <Image
-                source={require("../assets/banners/food-banner2.jpg")}
-                resizeMode="cover"
-                style={styles.sliderImage}
-              />
-            </View>
+          <View style={styles.slide}>
+            <Image
+              source={require("../assets/banners/food-banner1.jpg")}
+              resizeMode="cover"
+              style={styles.sliderImage}
+            />
+          </View>
+          <View style={styles.slide}>
+            <Image
+              source={require("../assets/banners/food-banner2.jpg")}
+              resizeMode="cover"
+              style={styles.sliderImage}
+            />
+          </View>
+          <View style={styles.slide}>
+            <Image
+              source={require("../assets/banners/food-banner2.jpg")}
+              resizeMode="cover"
+              style={styles.sliderImage}
+            />
           </View>
         </Swiper>
       </View>
-    </View>
+      <View style={styles.categoryContainer}>
+        <TouchableOpacity style={styles.categoryBtn} onPress={() => {}}>
+          <View style={styles.categoryIcon}>
+            <Ionicons name="ios-restaurant" size={35} color="#FF6347" />
+          </View>
+          <Text style={styles.categoryBtnTxt}>Restaurant</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.categoryBtn} onPress={() => {}}>
+          <View style={styles.categoryIcon}>
+            <MaterialCommunityIcons
+              name="food-fork-drink"
+              size={35}
+              color="#FF6347"
+            />
+          </View>
+          <Text style={styles.categoryBtnTxt}>FastFood Center</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.categoryBtn} onPress={() => {}}>
+          <View style={styles.categoryIcon}>
+            <MaterialCommunityIcons name="food" size={35} color="#FF6347" />
+          </View>
+          <Text style={styles.categoryBtnTxt}>Snacks Corner</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={[styles.categoryContainer, { marginTop: 10 }]}>
+        <TouchableOpacity style={styles.categoryBtn} onPress={() => {}}>
+          <View style={styles.categoryIcon}>
+            <Fontisto name="hotel" size={35} color="#FF6347" />
+          </View>
+          <Text style={styles.categoryBtnTxt}>Hotels</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.categoryBtn} onPress={() => {}}>
+          <View style={styles.categoryIcon}>
+            <Ionicons name="md-restaurant" size={35} color="#FF6347" />
+          </View>
+          <Text style={styles.categoryBtnTxt}>Dineouts</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.categoryBtn} onPress={() => {}}>
+          <View style={styles.categoryIcon}>
+            <MaterialIcons name="expand-more" size={35} color="#FF6347" />
+          </View>
+          <Text style={styles.categoryBtnTxt}>Show More</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.cardsWrapper}>
+        <Text
+          style={{
+            alignSelf: "center",
+            fontSize: 18,
+            fontWeight: "bold",
+            color: "#333",
+            marginBottom: 10,
+          }}
+        >
+          Recently Viewed
+        </Text>
+        <View style={styles.card}>
+          <View style={styles.cardImgWrapper}>
+            <Image
+              source={require("../assets/banners/food-banner5.jpg")}
+              resizeMode="cover"
+              style={styles.cardImg}
+            />
+          </View>
+          <View style={styles.cardInfo}>
+            <Text style={styles.cardTitle}>Amazing Food Place </Text>
+            <StarRating ratings={4} reviews={99} />
+            <Text style={styles.cardDetails}>
+              lorem description for the place
+            </Text>
+          </View>
+        </View>
+        <View style={styles.card}>
+          <View style={styles.cardImgWrapper}>
+            <Image
+              source={require("../assets/banners/food-banner4.jpg")}
+              resizeMode="cover"
+              style={styles.cardImg}
+            />
+          </View>
+          <View style={styles.cardInfo}>
+            <Text style={styles.cardTitle}>Amazing Food Place </Text>
+            <StarRating ratings={4} reviews={99} />
+            <Text style={styles.cardDetails}>
+              lorem description for the place
+            </Text>
+          </View>
+        </View>
+        <View style={styles.card}>
+          <View style={styles.cardImgWrapper}>
+            <Image
+              source={require("../assets/banners/food-banner3.jpg")}
+              resizeMode="cover"
+              style={styles.cardImg}
+            />
+          </View>
+          <View style={styles.cardInfo}>
+            <Text style={styles.cardTitle}>Amazing Food Place </Text>
+            <StarRating ratings={4} reviews={99} />
+            <Text style={styles.cardDetails}>
+              lorem description for the place
+            </Text>
+          </View>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
