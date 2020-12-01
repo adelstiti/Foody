@@ -1,4 +1,6 @@
 import React, { useEffect, useMemo, useReducer, useState } from "react";
+import { firebase } from "./firebase";
+
 import {
   NavigationContainer,
   DarkTheme,
@@ -13,7 +15,7 @@ import BookmarkScreen from "./screens/BookmarkScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import RootStackScreen from "./screens/RootStackScreen";
 import { AsyncStorage, Text, View } from "react-native";
-import { AuthContext } from "./components/Context";
+import { AuthContext } from "./components/AuthContext";
 
 import {
   DarkTheme as PaperDarkTheme,
@@ -53,8 +55,7 @@ const App = () => {
 
   const initialLoginState = {
     isLoading: true,
-    userName: null,
-    userToken: null,
+    user: null,
   };
 
   const loginReducer = (prevState, action) => {
@@ -64,22 +65,19 @@ const App = () => {
       case "LOGIN":
         return {
           ...prevState,
-          userName: action.id,
-          userToken: action.token,
+          user: action.user,
           isLoading: false,
         };
       case "LOGOUT":
         return {
           ...prevState,
-          userName: null,
-          userToken: null,
+          user: null,
           isLoading: false,
         };
       case "REGISTER":
         return {
           ...prevState,
-          userName: action.id,
-          userToken: action.token,
+          user: action.user,
           isLoading: false,
         };
 
@@ -94,22 +92,29 @@ const App = () => {
     () => ({
       signIn: async (user) => {
         try {
-          await AsyncStorage.setItem("usertoken", user.userToken);
+          await firebase
+            .auth()
+            .signInWithEmailAndPassword(user.email, user.password);
+
+          dispatch({
+            type: "LOGIN",
+            user: user,
+          });
         } catch (error) {
           console.log(error);
         }
-
-        dispatch({
-          type: "LOGIN",
-          userName: user.email,
-          token: user.usertoken,
-        });
         console.log(initialLoginState, user);
       },
-      signUp: () => {},
+      signUp: async ({ email, password }) => {
+        try {
+          await firebase.auth().createUserWithEmailAndPassword(email, password);
+        } catch (error) {
+          console.log(error);
+        }
+      },
       signOut: async () => {
         try {
-          await AsyncStorage.removeItem("usertoken");
+          await firebase.auth().signOut();
         } catch (error) {
           console.log(error);
         }
@@ -124,15 +129,17 @@ const App = () => {
 
   useEffect(() => {
     setTimeout(async () => {
-      let usertoken;
       try {
-        usertoken = await AsyncStorage.getItem("usertoken");
+        await firebase.auth().onAuthStateChanged((user) => {
+          dispatch({ type: "REGISTER", user: user });
+        });
       } catch (error) {
         console.log(error);
       }
-      dispatch({ type: "REGISTER", token: usertoken });
     }, 1000);
-  }, [loginState.userToken]);
+    console.log("heeey");
+    // }, [loginState.userToken]);
+  }, []);
 
   if (loginState.isLoading) {
     return (
@@ -149,7 +156,7 @@ const App = () => {
     <PaperProvider theme={theme}>
       <AuthContext.Provider value={authContext}>
         <NavigationContainer theme={theme}>
-          {loginState.userToken ? (
+          {loginState.user ? (
             <Drawer.Navigator
               drawerContent={(props) => <DrawerContent {...props} />}
             >

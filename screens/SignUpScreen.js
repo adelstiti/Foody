@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,15 +10,17 @@ import {
 
 import * as Animatable from "react-native-animatable";
 import { LinearGradient } from "expo-linear-gradient";
-import { FontAwesome } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
+import { FontAwesome, Feather, Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useTheme } from "react-native-paper";
+import { AuthContext } from "../components/AuthContext";
 
 const SignUpScreen = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
   const [valid_email, setValid_email] = useState(false);
+  const [valid_password, setValid_password] = useState(true);
+  const [valid_ConfirmPassword, setValid_ConfirmPassword] = useState(true);
   const { colors } = useTheme();
 
   const [data, setData] = useState({
@@ -26,8 +28,11 @@ const SignUpScreen = ({ navigation }) => {
     password: "",
     confirmPassword: "",
   });
+
+  const { signUp } = useContext(AuthContext);
+
   const EmailChange = (val) => {
-    if (val.length !== 0) {
+    if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val)) {
       setData({
         ...data,
         email: val,
@@ -41,6 +46,47 @@ const SignUpScreen = ({ navigation }) => {
       setValid_email(false);
     }
   };
+
+  const PasswordChange = (val) => {
+    if (val.trim().length >= 8) {
+      setData({
+        ...data,
+        password: val,
+      });
+      setValid_password(true);
+    } else {
+      setValid_password(false);
+    }
+  };
+
+  const ConfirmPasswordChange = (val) => {
+    if (val.trim().length >= 8) {
+      setData({
+        ...data,
+        confirmPassword: val,
+      });
+      setValid_ConfirmPassword(true);
+    } else {
+      setValid_ConfirmPassword(false);
+    }
+  };
+  const handleSubmit = () => {
+    if (
+      valid_email &&
+      valid_password &&
+      valid_ConfirmPassword &&
+      data.email &&
+      data.password &&
+      data.confirmPassword
+    ) {
+      signUp(data);
+    } else {
+      setValid_email(false);
+      setValid_password(false);
+      setValid_ConfirmPassword(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#FF6347" barStyle="light-content" />
@@ -75,6 +121,11 @@ const SignUpScreen = ({ navigation }) => {
               </Animatable.View>
             )}
           </View>
+          {!valid_email && (
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>Email must be valid</Text>
+            </Animatable.View>
+          )}
           <Text
             style={[styles.text_footer, { color: colors.text, marginTop: 25 }]}
           >
@@ -92,7 +143,7 @@ const SignUpScreen = ({ navigation }) => {
               placeholderTextColor="#666666"
               autoCapitalize="none"
               style={[styles.textInput, { color: colors.text }]}
-              onChangeText={(val) => setData({ ...data, password: val })}
+              onChangeText={(val) => PasswordChange(val)}
               secureTextEntry={hidePassword}
             />
             {hidePassword ? (
@@ -111,6 +162,13 @@ const SignUpScreen = ({ navigation }) => {
               />
             )}
           </View>
+          {!valid_password && (
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>
+                Password must be 8 characters long
+              </Text>
+            </Animatable.View>
+          )}
           <Text
             style={[styles.text_footer, { color: colors.text, marginTop: 25 }]}
           >
@@ -128,10 +186,10 @@ const SignUpScreen = ({ navigation }) => {
               autoCapitalize="none"
               placeholderTextColor="#666666"
               style={[styles.textInput, { color: colors.text }]}
-              onChangeText={(val) => setData({ ...data, confirmPassword: val })}
+              onChangeText={(val) => ConfirmPasswordChange(val)}
               secureTextEntry={hideConfirmPassword}
             />
-            {hidePassword ? (
+            {hideConfirmPassword ? (
               <Feather
                 name="eye-off"
                 color="grey"
@@ -147,30 +205,84 @@ const SignUpScreen = ({ navigation }) => {
               />
             )}
           </View>
+          {!valid_ConfirmPassword && (
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>
+                Password must be 8 characters long
+              </Text>
+            </Animatable.View>
+          )}
 
           <View style={styles.button}>
-            <LinearGradient
-              colors={["#FFA07A", "#FF6347"]}
-              style={styles.signIn}
+            <TouchableOpacity
+              style={(styles.signIn, { width: 300 })}
+              onPress={handleSubmit}
             >
-              <Text style={(styles.signIn, { color: "white", fontSize: 17 })}>
-                Sign Up
-              </Text>
-            </LinearGradient>
+              <LinearGradient
+                colors={["#FFA07A", "#FF6347"]}
+                style={styles.signIn}
+              >
+                <Text
+                  style={[styles.textSign, { color: "white", fontSize: 17 }]}
+                >
+                  Sign In
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+
             <TouchableOpacity
               style={[
                 styles.signIn,
                 {
-                  borderColor: "#FF6347",
-                  width: 200,
+                  width: 300,
+                  borderColor: "#485a96",
                   borderWidth: 1,
                   marginTop: 15,
+                  flexDirection: "row",
                 },
               ]}
-              onPress={() => navigation.goBack()}
             >
-              <Text style={[styles.textSign, { color: "#FF6347" }]}>
-                Sign In
+              <Feather
+                color="#485a96"
+                name="facebook"
+                size={25}
+                style={{ marginRight: 20 }}
+              />
+              <Text
+                style={[styles.textSign, { color: "#485a96", fontSize: 17 }]}
+              >
+                Sign Up with Facebook
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.signIn,
+                {
+                  width: 300,
+                  borderColor: "#cf4332",
+                  borderWidth: 1,
+                  marginTop: 15,
+                  flexDirection: "row",
+                },
+              ]}
+            >
+              <Ionicons
+                color="#cf4332"
+                name="logo-google"
+                size={25}
+                style={{ marginRight: 20 }}
+              />
+              <Text
+                style={[styles.textSign, { color: "#cf4332", fontSize: 17 }]}
+              >
+                Sign Up with Google
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("SignUpScreen")}
+            >
+              <Text style={{ color: "#FF6347", marginTop: 15 }}>
+                Don't have an account? Create here?
               </Text>
             </TouchableOpacity>
           </View>
@@ -199,7 +311,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingTop: 30,
   },
   text_header: {
     color: "#fff",
@@ -209,6 +321,10 @@ const styles = StyleSheet.create({
   text_footer: {
     color: "#05375a",
     fontSize: 18,
+  },
+  errorMsg: {
+    color: "#FF0000",
+    fontSize: 14,
   },
   action: {
     flexDirection: "row",
@@ -224,7 +340,8 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 30,
+    marginBottom: 20,
   },
   signIn: {
     width: "100%",

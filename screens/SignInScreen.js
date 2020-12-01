@@ -10,10 +10,9 @@ import {
 
 import * as Animatable from "react-native-animatable";
 import { LinearGradient } from "expo-linear-gradient";
-import { FontAwesome } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { AuthContext } from "../components/Context";
+import { FontAwesome, Feather, Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
+import { AuthContext } from "../components/AuthContext";
 import Users from "../model/User";
 import { useTheme } from "react-native-paper";
 
@@ -54,18 +53,9 @@ const SignInScreen = ({ navigation }) => {
     }
   };
 
-  const handeSubmit = () => {
+  const handleSubmit = () => {
     if (valid_email && valid_password && data.email && data.password) {
-      const foundUser = Users.filter(
-        (item) => item.email === data.email && item.password === data.password
-      );
-      if (foundUser.length === 0) {
-        Alert.alert("User not found", "Please check your data.", [
-          { text: "Okay" },
-        ]);
-      } else {
-        signIn(foundUser[0]);
-      }
+      signIn(data);
     } else {
       setValid_email(false);
       setValid_password(false);
@@ -81,110 +71,158 @@ const SignInScreen = ({ navigation }) => {
         animation="fadeInUpBig"
         style={[styles.footer, { backgroundColor: colors.background }]}
       >
-        <Text style={[styles.text_footer, { color: colors.text }]}>Email</Text>
-        <View style={styles.action}>
-          <FontAwesome
-            style={{ color: colors.text }}
-            name="user-o"
-            color="#05375a"
-            size={20}
-          />
-          <TextInput
-            placeholderTextColor="#666666"
-            placeholder="Your Email"
-            autoCapitalize="none"
-            style={[styles.textInput, { color: colors.text }]}
-            onChangeText={(val) => EmailChange(val)}
-          />
-          {valid_email && data.email !== "" && (
-            <Animatable.View animation="bounceIn">
-              <Feather name="check-circle" color="green" size={20} />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Text style={[styles.text_footer, { color: colors.text }]}>
+            Email
+          </Text>
+          <View style={styles.action}>
+            <FontAwesome
+              style={{ color: colors.text }}
+              name="user-o"
+              color="#05375a"
+              size={20}
+            />
+            <TextInput
+              placeholderTextColor="#666666"
+              placeholder="Your Email"
+              autoCapitalize="none"
+              style={[styles.textInput, { color: colors.text }]}
+              onChangeText={(val) => EmailChange(val)}
+            />
+            {valid_email && data.email !== "" && (
+              <Animatable.View animation="bounceIn">
+                <Feather name="check-circle" color="green" size={20} />
+              </Animatable.View>
+            )}
+          </View>
+          {!valid_email && (
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>Email must be valid</Text>
             </Animatable.View>
           )}
-        </View>
-        {!valid_email && (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Email must be valid</Text>
-          </Animatable.View>
-        )}
-        <Text
-          style={[styles.text_footer, { color: colors.text, marginTop: 25 }]}
-        >
-          Password
-        </Text>
-        <View style={styles.action}>
-          <Feather
-            name="lock"
-            style={{ color: colors.text }}
-            color="#05375a"
-            size={20}
-          />
-          <TextInput
-            placeholder="Your Password"
-            placeholderTextColor="#666666"
-            autoCapitalize="none"
-            style={[styles.textInput, { color: colors.text }]}
-            onChangeText={(val) => PasswordChange(val)}
-            secureTextEntry={hidePassword}
-          />
-          {hidePassword ? (
-            <Feather
-              name="eye-off"
-              color="grey"
-              size={20}
-              onPress={() => setHidePassword(!hidePassword)}
-            />
-          ) : (
-            <Feather
-              name="eye"
-              color="grey"
-              size={20}
-              onPress={() => setHidePassword(!hidePassword)}
-            />
-          )}
-        </View>
-        {!valid_password && (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>
-              Password must be 8 characters long
-            </Text>
-          </Animatable.View>
-        )}
-
-        <TouchableOpacity>
-          <Text style={{ color: "#FF6347", marginTop: 15 }}>
-            Forgot password?
+          <Text
+            style={[styles.text_footer, { color: colors.text, marginTop: 25 }]}
+          >
+            Password
           </Text>
-        </TouchableOpacity>
-        <View style={styles.button}>
-          <TouchableOpacity
-            style={(styles.signIn, { width: 300 })}
-            onPress={handeSubmit}
-          >
-            <LinearGradient
-              colors={["#FFA07A", "#FF6347"]}
-              style={styles.signIn}
-            >
-              <Text style={[styles.textSign, { color: "white", fontSize: 17 }]}>
-                Sign In
+          <View style={styles.action}>
+            <Feather
+              name="lock"
+              style={{ color: colors.text }}
+              color="#05375a"
+              size={20}
+            />
+            <TextInput
+              placeholder="Your Password"
+              placeholderTextColor="#666666"
+              autoCapitalize="none"
+              style={[styles.textInput, { color: colors.text }]}
+              onChangeText={(val) => PasswordChange(val)}
+              secureTextEntry={hidePassword}
+            />
+            {hidePassword ? (
+              <Feather
+                name="eye-off"
+                color="grey"
+                size={20}
+                onPress={() => setHidePassword(!hidePassword)}
+              />
+            ) : (
+              <Feather
+                name="eye"
+                color="grey"
+                size={20}
+                onPress={() => setHidePassword(!hidePassword)}
+              />
+            )}
+          </View>
+          {!valid_password && (
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>
+                Password must be 8 characters long
               </Text>
-            </LinearGradient>
+            </Animatable.View>
+          )}
+
+          <TouchableOpacity>
+            <Text style={{ color: "#FF6347", marginTop: 15 }}>
+              Forgot password?
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.signIn,
-              {
-                borderColor: "#FF6347",
-                width: 200,
-                borderWidth: 1,
-                marginTop: 15,
-              },
-            ]}
-            onPress={() => navigation.navigate("SignUpScreen")}
-          >
-            <Text style={[styles.textSign, { color: "#FF6347" }]}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.button}>
+            <TouchableOpacity
+              style={[styles.signIn, { width: 300 }]}
+              onPress={handleSubmit}
+            >
+              <LinearGradient
+                colors={["#FFA07A", "#FF6347"]}
+                style={styles.signIn}
+              >
+                <Text
+                  style={[styles.textSign, { color: "white", fontSize: 17 }]}
+                >
+                  Sign In
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.signIn,
+                {
+                  width: 300,
+                  borderColor: "#485a96",
+                  borderWidth: 1,
+                  marginTop: 15,
+                  flexDirection: "row",
+                },
+              ]}
+            >
+              <Feather
+                color="#485a96"
+                name="facebook"
+                size={25}
+                style={{ marginRight: 20 }}
+              />
+              <Text
+                style={[styles.textSign, { color: "#485a96", fontSize: 17 }]}
+              >
+                Sign In with Facebook
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.signIn,
+                {
+                  width: 300,
+                  borderColor: "#cf4332",
+                  borderWidth: 1,
+                  marginTop: 15,
+                  flexDirection: "row",
+                },
+              ]}
+            >
+              <Ionicons
+                color="#cf4332"
+                name="logo-google"
+                size={25}
+                style={{ marginRight: 20 }}
+              />
+              <Text
+                style={[styles.textSign, { color: "#cf4332", fontSize: 17 }]}
+              >
+                Sign In with Google
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("SignUpScreen")}
+            >
+              <Text style={{ color: "#FF6347", marginTop: 15 }}>
+                Don't have an account? Create here?
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </Animatable.View>
     </View>
   );
@@ -209,7 +247,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingTop: 30,
   },
   text_header: {
     color: "#fff",
@@ -234,7 +272,8 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 30,
+    marginBottom: 20,
   },
   signIn: {
     width: "100%",

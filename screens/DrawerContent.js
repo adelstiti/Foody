@@ -13,7 +13,7 @@ import {
 } from "react-native-paper";
 import { DrawerItem, DrawerContentScrollView } from "@react-navigation/drawer";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
-import { AuthContext } from "../components/Context";
+import { AuthContext } from "../components/AuthContext";
 
 const DrawerContent = (props) => {
   const paperTheme = useTheme();
