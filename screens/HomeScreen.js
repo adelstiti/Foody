@@ -14,13 +14,15 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import StarRating from "../components/StarRating";
+import { StatusBar } from "expo-status-bar";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
 
   const theme = useTheme();
   return (
     <ScrollView style={styles.container}>
+      <StatusBar barStyle={theme.dark ? "light-content" : "dark-content"} />
       <View style={styles.sliderContainer}>
         <Swiper
           horizontal={false}
@@ -52,13 +54,23 @@ const HomeScreen = () => {
         </Swiper>
       </View>
       <View style={styles.categoryContainer}>
-        <TouchableOpacity style={styles.categoryBtn} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.categoryBtn}
+          onPress={() =>
+            navigation.navigate("CardListScreen", { title: "Restaurants" })
+          }
+        >
           <View style={styles.categoryIcon}>
             <Ionicons name="ios-restaurant" size={35} color="#FF6347" />
           </View>
           <Text style={styles.categoryBtnTxt}>Restaurant</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.categoryBtn} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.categoryBtn}
+          onPress={() =>
+            navigation.navigate("CardListScreen", { title: "FastFood Center" })
+          }
+        >
           <View style={styles.categoryIcon}>
             <MaterialCommunityIcons
               name="food-fork-drink"
@@ -68,7 +80,12 @@ const HomeScreen = () => {
           </View>
           <Text style={styles.categoryBtnTxt}>FastFood Center</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.categoryBtn} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.categoryBtn}
+          onPress={() =>
+            navigation.navigate("CardListScreen", { title: "Snacks Corner" })
+          }
+        >
           <View style={styles.categoryIcon}>
             <MaterialCommunityIcons name="food" size={35} color="#FF6347" />
           </View>
