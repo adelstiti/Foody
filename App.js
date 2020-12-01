@@ -12,15 +12,18 @@ import NotificationsScreen from "./screens/NotificationsScreen";
 import BookmarkScreen from "./screens/BookmarkScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import RootStackScreen from "./screens/RootStackScreen";
-import { ActivityIndicator, View } from "react-native";
+import { AsyncStorage, Text, View } from "react-native";
 import { AuthContext } from "./components/Context";
-import { AsyncStorage } from "react-native";
+
 import {
   DarkTheme as PaperDarkTheme,
   DefaultTheme as PaperDefaultTheme,
   Provider as PaperProvider,
 } from "react-native-paper";
+import { Image } from "react-native-animatable";
+
 const Drawer = createDrawerNavigator();
+
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
 
@@ -129,15 +132,15 @@ const App = () => {
       }
       dispatch({ type: "REGISTER", token: usertoken });
     }, 1000);
-    console.log("ok")
   }, [loginState.userToken]);
 
   if (loginState.isLoading) {
     return (
-      <View
-        style={{ flex: 1, justifyContent: "center", alignContent: "center" }}
-      >
-        <ActivityIndicator size="large" />
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Image
+          style={{ width: 200, height: 200 }}
+          source={require("./assets/start-animation.gif")}
+        />
       </View>
     );
   }
