@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -27,7 +27,7 @@ const SignInScreen = ({ navigation }) => {
     password: "",
   });
 
-  const { signIn } = useContext(AuthContext);
+  const [stateAuth, dispatch] = useContext(AuthContext);
 
   const EmailChange = (val) => {
     if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val)) {
@@ -55,12 +55,19 @@ const SignInScreen = ({ navigation }) => {
 
   const handleSubmit = () => {
     if (valid_email && valid_password && data.email && data.password) {
-      signIn(data);
+      dispatch.signIn(data);
     } else {
       setValid_email(false);
       setValid_password(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch.clearError();
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#FF6347" barStyle="light-content" />
@@ -149,6 +156,20 @@ const SignInScreen = ({ navigation }) => {
               Forgot password?
             </Text>
           </TouchableOpacity>
+
+          {stateAuth.error !== "" && (
+            <View
+              style={{
+                marginTop: 10,
+                alignItems: "center",
+              }}
+            >
+              <Text style={[styles.errorMsg, { fontSize: 17 }]}>
+                {stateAuth.error}{" "}
+              </Text>
+            </View>
+          )}
+
           <View style={styles.button}>
             <TouchableOpacity
               style={[styles.signIn, { width: 300 }]}

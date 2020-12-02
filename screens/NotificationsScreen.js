@@ -100,6 +100,7 @@ const NotificationsScreen = () => {
         toValue: 500,
       }).start();
     }
+
     return (
       <Animated.View
         style={[styles.rowBack, { height: rowHeightAnimatedValue }]}
@@ -173,7 +174,7 @@ const NotificationsScreen = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <SwipeListView
-        keyExtractor={(item, index) => item.key}
+        keyExtractor={(item, index) => item.key.toString()}
         data={listData}
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}

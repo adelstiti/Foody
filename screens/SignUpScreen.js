@@ -18,7 +18,7 @@ import { AuthContext } from "../components/AuthContext";
 const SignUpScreen = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
-  const [valid_email, setValid_email] = useState(false);
+  const [valid_email, setValid_email] = useState(true);
   const [valid_password, setValid_password] = useState(true);
   const [valid_ConfirmPassword, setValid_ConfirmPassword] = useState(true);
   const { colors } = useTheme();
@@ -29,7 +29,7 @@ const SignUpScreen = ({ navigation }) => {
     confirmPassword: "",
   });
 
-  const { signUp } = useContext(AuthContext);
+  const [stateAuth, dispatch] = useContext(AuthContext);
 
   const EmailChange = (val) => {
     if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val)) {
@@ -79,7 +79,7 @@ const SignUpScreen = ({ navigation }) => {
       data.password &&
       data.confirmPassword
     ) {
-      signUp(data);
+      dispatch.signUp(data);
     } else {
       setValid_email(false);
       setValid_password(false);
@@ -87,6 +87,11 @@ const SignUpScreen = ({ navigation }) => {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch.clearError();
+    };
+  }, []);
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#FF6347" barStyle="light-content" />
@@ -211,6 +216,19 @@ const SignUpScreen = ({ navigation }) => {
                 Password must be 8 characters long
               </Text>
             </Animatable.View>
+          )}
+
+          {stateAuth.error !== "" && (
+            <View
+              style={{
+                marginTop: 10,
+                alignItems: "center",
+              }}
+            >
+              <Text style={[styles.errorMsg, { fontSize: 17 }]}>
+                {stateAuth.error}
+              </Text>
+            </View>
           )}
 
           <View style={styles.button}>

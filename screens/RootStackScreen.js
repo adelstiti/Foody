@@ -18,7 +18,6 @@ const RootStackScreen = ({ navigation }) => {
         AsyncStorage.setItem("alreadyLanched", "true");
         setIsFirstLaunch(true);
       } else {
-        console.log("okok");
         setIsFirstLaunch(false);
       }
     });

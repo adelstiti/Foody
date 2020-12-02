@@ -5,6 +5,7 @@ import ExploreScreen from "./ExploreScreen";
 import ProfileStackScreen from "./ProfileStackScreen";
 import HomeScreen from "./HomeScreen";
 import HomeStackScreen from "./HomeStackScreen";
+import NotificationsScreen from "./NotificationsScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -33,16 +34,12 @@ function MainTabScreen() {
         }}
       />
       <Tab.Screen
-        name="Messages"
-        component={ProfileStackScreen}
+        name="Notifications"
+        component={NotificationsScreen}
         options={{
           tabBarColor: "#694fad",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="android-messages"
-              color={color}
-              size={26}
-            />
+            <MaterialCommunityIcons name="bell" color={color} size={26} />
           ),
         }}
       />

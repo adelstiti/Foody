@@ -55,30 +55,50 @@ const App = () => {
 
   const initialLoginState = {
     isLoading: true,
+    error: "",
     user: null,
   };
 
   const loginReducer = (prevState, action) => {
     switch (action.type) {
       case "IS_LOGIN":
-        return { ...prevState, userToken: action.token, isLoading: false };
+        return {
+          ...prevState,
+          userToken: action.token,
+          isLoading: false,
+          error: "",
+        };
       case "LOGIN":
         return {
           ...prevState,
           user: action.user,
           isLoading: false,
+          error: "",
         };
       case "LOGOUT":
         return {
           ...prevState,
           user: null,
           isLoading: false,
+          error: "",
         };
       case "REGISTER":
         return {
           ...prevState,
           user: action.user,
           isLoading: false,
+          error: "",
+        };
+      case "ERROR":
+        return {
+          ...prevState,
+          error: action.error,
+          isLoading: false,
+        };
+      case "CLEAR_ERROR":
+        return {
+          ...prevState,
+          error: "",
         };
 
       default:
@@ -101,15 +121,20 @@ const App = () => {
             user: user,
           });
         } catch (error) {
-          console.log(error);
+          dispatch({
+            type: "ERROR",
+            error: "Check your data",
+          });
         }
-        console.log(initialLoginState, user);
       },
       signUp: async ({ email, password }) => {
         try {
           await firebase.auth().createUserWithEmailAndPassword(email, password);
         } catch (error) {
-          console.log(error);
+          dispatch({
+            type: "ERROR",
+            error: "Check your data",
+          });
         }
       },
       signOut: async () => {
@@ -123,12 +148,15 @@ const App = () => {
       toggleTheme: () => {
         setIsDarkTheme((isdak) => !isdak);
       },
+      clearError: () => {
+        dispatch({ type: "CLEAR_ERROR" });
+      },
     }),
     []
   );
 
   useEffect(() => {
-    setTimeout(async () => {
+    const loadUser = async () => {
       try {
         await firebase.auth().onAuthStateChanged((user) => {
           dispatch({ type: "REGISTER", user: user });
@@ -136,7 +164,8 @@ const App = () => {
       } catch (error) {
         console.log(error);
       }
-    }, 1000);
+    };
+    loadUser();
     console.log("heeey");
     // }, [loginState.userToken]);
   }, []);
@@ -154,7 +183,7 @@ const App = () => {
 
   return (
     <PaperProvider theme={theme}>
-      <AuthContext.Provider value={authContext}>
+      <AuthContext.Provider value={[loginState, authContext]}>
         <NavigationContainer theme={theme}>
           {loginState.user ? (
             <Drawer.Navigator
