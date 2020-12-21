@@ -23,6 +23,8 @@ You can read more about me on: [LinkedIn](https://www.linkedin.com/in/adel-stiti
 
 <p align="center"><img src="https://i.ibb.co/cQ6fN5J/Pixel-2-XL-Sketch-Mockup-1-2.png" /></p>
 
+<p align="center"><img src="https://i.ibb.co/TtXqnf9/Pixel-2-XL-Sketch-Mockup-1-3.png" /></p>
+
 <p align="center"><img src="https://i.ibb.co/pWtJkvj/Pixel-2-XL-Sketch-Mockup-1-1.png" /></p>
 
 **Use..**

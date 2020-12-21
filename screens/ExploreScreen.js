@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Text,
   Platform,
+  StatusBar,
 } from "react-native";
 import MapView, { Callout } from "react-native-maps";
 import { MaterialCommunityIcons, Ionicons, Fontisto } from "@expo/vector-icons";
@@ -62,10 +63,10 @@ const ExploreScreen = () => {
       },
     ],
     region: {
-      latitude: 22.62938671242907,
-      longitude: 88.4354486029795,
-      latitudeDelta: 0.04864195044303443,
-      longitudeDelta: 0.040142817690068,
+      latitude: 36.7947122,
+      longitude: 10.1798086,
+      latitudeDelta: 0.0164195044303443,
+      longitudeDelta: 0.010142817690068,
     },
   };
   const [state, setState] = React.useState(initialMapState);
@@ -132,6 +133,7 @@ const ExploreScreen = () => {
   };
   return (
     <View style={styles.container}>
+      <StatusBar barStyle={theme.dark ? "light-content" : "dark-content"} />
       <MapView
         ref={_map}
         style={styles.container}

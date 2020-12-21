@@ -17,7 +17,8 @@ import { AuthContext } from "../components/AuthContext";
 
 const DrawerContent = (props) => {
   const paperTheme = useTheme();
-  const { signOut, toggleTheme } = useContext(AuthContext);
+  const [stateAuth, dispatch] = useContext(AuthContext);
+
   return (
     <View style={styles.drawerContent}>
       <DrawerContentScrollView {...props}>
@@ -104,7 +105,7 @@ const DrawerContent = (props) => {
             />
           </Drawer.Section>
           <Drawer.Section title="Preferences">
-            <TouchableRipple onPress={() => toggleTheme()}>
+            <TouchableRipple onPress={() => dispatch.toggleTheme()}>
               <View style={styles.preference}>
                 <Text>Dark Theme</Text>
                 <View pointerEvents="none">
@@ -121,7 +122,7 @@ const DrawerContent = (props) => {
             <Icon name="exit-to-app" color={color} size={size} />
           )}
           label="Sign out"
-          onPress={() => signOut()}
+          onPress={() => dispatch.signOut()}
         />
       </Drawer.Section>
     </View>

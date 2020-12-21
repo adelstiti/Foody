@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Text,
+  StatusBar,
 } from "react-native";
 import Swiper from "react-native-swiper";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -14,7 +15,6 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import StarRating from "../components/StarRating";
-import { StatusBar } from "expo-status-bar";
 
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
